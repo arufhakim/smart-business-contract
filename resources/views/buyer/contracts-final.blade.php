@@ -1,10 +1,10 @@
 @extends('layouts.master-dashboard')
-@section('page-title', 'Review Hukum')
-@section('buyer-review-legal', 'active')
+@section('page-title', 'Final')
+@section('buyer-final', 'active')
 @section('address')
 <ol class="breadcrumb float-sm-right">
     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-    <li class="breadcrumb-item active">Review Hukum</li>
+    <li class="breadcrumb-item active">Final</li>
 </ol>
 @endsection
 @push('styles')
@@ -18,7 +18,7 @@
 <div>
     <div class="card">
         <div class="card-header card-forestgreen">
-            <h6 class="card-title pt-1">Review Hukum</h6>
+            <h6 class="card-title pt-1">Final</h6>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool btn-xs pr-0" data-card-widget="maximize"><i class="fas fa-expand fa-xs icon-border-default"></i>
                 </button>
@@ -72,10 +72,10 @@
                                 @elseif ($contract->status_id == 8)
                                 <span class="badge badge-success">DIREKTUR KEUANGAN DAN UMUM</span>
                                 @elseif ($contract->status_id == 9)
-                                <span class="badge badge-danger">FINAL</span>
+                                <span class="badge badge-danger">APPROVE</span>
                                 @endif
                             </td>
-                            <td class="text-center" style="vertical-align: middle;"> <a href="{{ route('buyer.contract-review-legal', ['contract' => $contract->contract_id, 'vendor' => $contract->vendor_id]) }}" class="btn btn-primary btn-xs"><b>Rincian</b></a>
+                            <td class="text-center" style="vertical-align: middle;"> <a href="{{ route('buyer.contract-final', ['contract' => $contract->contract_id, 'vendor' => $contract->vendor_id]) }}" class="btn btn-primary btn-xs"><b>Rincian</b></a>
                         </tr>
                         @endif
                         @endforeach

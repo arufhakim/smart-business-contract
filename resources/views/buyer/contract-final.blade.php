@@ -1,6 +1,6 @@
 @extends('layouts.master-dashboard')
 @section('page-title', 'Detail Kontrak')
-@section('buyer-approval', 'active')
+@section('buyer-final', 'active')
 @section('address')
 <ol class="breadcrumb float-sm-right">
     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>

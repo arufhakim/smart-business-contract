@@ -29,9 +29,10 @@
         <div class="card-body">
             <div class="mb-3">
                 <a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#kembalikan">Kembalikan</a>
-                @if($contracts->pivot->nilai_kontrak <= 100000000) <a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#acc">Persetujuan</a>
+                @if ($contracts->pivot->nilai_kontrak <= 100000000) <a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#final-approval">Persetujuan</a>
                     @else
-                    <a href="#" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#svp">Kirim Ke SVP</a>
+                    <a href="#" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#svp">Kirim Ke
+                        SVP</a>
                     @endif
             </div>
             <form>
@@ -177,7 +178,7 @@
 </div>
 
 <!-- Persetujuan -->
-<div class="modal fade" id="acc" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="final-approval" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

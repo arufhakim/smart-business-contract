@@ -108,6 +108,6 @@ class DKUController extends Controller
 
         $flasher->addSuccess('Berhasil Final Approval!');
 
-        return redirect()->route('dku.review-contracts');
+        return redirect()->back();
     }
 }

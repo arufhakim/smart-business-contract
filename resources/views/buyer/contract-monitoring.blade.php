@@ -104,6 +104,8 @@
                                             <span class="badge badge-success">SENIOR VICE PRESIDENT</span>
                                         @elseif ($contract->pivot->status_id == 8)
                                             <span class="badge badge-success">DIREKTUR KEUANGAN DAN UMUM</span>
+                                        @elseif ($contract->pivot->status_id == 9)
+                                            <span class="badge badge-danger">Final</span>
                                         @endif
                                     </td>
                                     <td class="text-center" style="vertical-align: middle;"> <a

@@ -53,6 +53,10 @@ Route::get('/buyer/contract/{contract}/vendor/{vendor}/review-legal', [BuyerCont
 
 Route::get('/buyer/contract/approval', [BuyerController::class, 'contracts_approval'])->name('buyer.contracts-approval');
 Route::get('/buyer/contract/{contract}/vendor/{vendor}/approval', [BuyerController::class, 'contract_approval'])->name('buyer.contract-approval');
+Route::post('/buyer/contract/{contract}/vendor/{vendor}/send', [BuyerController::class, 'contract_send'])->name('buyer.contract-send');
+
+Route::get('/buyer/contract/final', [BuyerController::class, 'contracts_final'])->name('buyer.contracts-final');
+Route::get('/buyer/contract/{contract}/vendor/{vendor}/final', [BuyerController::class, 'contract_final'])->name('buyer.contract-final');
 
 // Vendor Contract
 Route::get('/vendor/contract', [VendorController::class, 'contracts'])->name('vendor.contracts');

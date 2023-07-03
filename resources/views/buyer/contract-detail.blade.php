@@ -77,7 +77,8 @@
                     @elseif ($contracts->pivot->status_id == 5)value="ASSISTANT VICE PRESIDENT"
                     @elseif ($contracts->pivot->status_id == 6)value="VICE PRESIDENT"
                     @elseif ($contracts->pivot->status_id == 7)value="SENIOR VICE PRESIDENT"
-                    @elseif ($contracts->pivot->status_id == 8)value="DIREKTUR KEUNGAN DAN UMUM" @endif
+                    @elseif ($contracts->pivot->status_id == 8)value="DIREKTUR KEUNGAN DAN UMUM"
+                    @elseif ($contracts->pivot->status_id == 9)value="FINAL" @endif
                     readonly>
                 </div>
             </div>
@@ -183,6 +184,8 @@
                             <span class="badge badge-success">SENIOR VICE PRESIDENT</span>
                             @elseif ($approval->status == 8)
                             <span class="badge badge-success">DIREKTUR KEUANGAN DAN UMUM</span>
+                            @elseif ($approval->status == 9)
+                            <span class="badge badge-danger">FINAL</span>
                             @endif
                         </td>
                         <td style="vertical-align: middle;">{{ $approval->description }}</td>

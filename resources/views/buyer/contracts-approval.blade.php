@@ -71,6 +71,8 @@
                                 <span class="badge badge-success">SENIOR VICE PRESIDENT</span>
                                 @elseif ($contract->status_id == 8)
                                 <span class="badge badge-success">DIREKTUR KEUANGAN DAN UMUM</span>
+                                @elseif ($contract->status_id == 9)
+                                <span class="badge badge-danger">APPROVE</span>
                                 @endif
                             </td>
                             <td class="text-center" style="vertical-align: middle;"> <a href="{{ route('buyer.contract-approval', ['contract' => $contract->contract_id, 'vendor' => $contract->vendor_id]) }}" class="btn btn-primary btn-xs"><b>Rincian</b></a>

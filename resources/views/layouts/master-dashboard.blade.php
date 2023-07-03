@@ -125,6 +125,14 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{route('buyer.contracts-final')}}" class="nav-link @yield('buyer-final')">
+                                <i class="nav-icon fas fa-chart-line fa-xs"></i>
+                                <p>
+                                    Final Rekanan
+                                </p>
+                            </a>
+                        </li>
                         @endif
 
                         @if(Auth::user()->userDetail->role->role == "Vendor")

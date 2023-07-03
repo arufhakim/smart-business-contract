@@ -246,7 +246,7 @@ class BuyerController extends Controller
     // CONTRACT Approval
     public function contracts_approval()
     {
-        $contracts = ContractVendor::whereIn('status_id', [4, 5, 6, 7, 8])->get();
+        $contracts = ContractVendor::whereIn('status_id', [4, 5, 6, 7, 8, 9])->get();
         return view('buyer.contracts-approval', compact('contracts'));
     }
 
@@ -255,5 +255,46 @@ class BuyerController extends Controller
         $contracts = $contract->vendors()->where('vendor_id', $vendor->id)->withPivot('id')->first();
         $review_hukum = ReviewLegal::where('contract_vendor_id', $contracts->pivot->id)->get();
         return view('buyer.contract-approval', compact('contracts', 'contract', 'review_hukum'));
+    }
+
+    public function contract_send(Request $request, Contract $contract, Vendor $vendor, FlasherInterface $flasher)
+    {
+        // validate input
+        $request->validate([
+            'description' => 'required'
+        ]);
+
+        // get contract_detail id
+        $contract_detail = $contract->vendors()->where('vendor_id', $vendor->id)->withPivot('id')->first();
+
+        // create approval
+        Approval::create([
+            'contract_vendor_id' => $contract_detail->pivot->id,
+            'name' => Auth::user()->name,
+            'status' => 9,
+            'description' => $request->description,
+        ]);
+
+        $contract->vendors()->updateExistingPivot($vendor->id, [
+            'status_id' => 10,
+        ]);
+
+        $flasher->addSuccess('Berhasil mengirim ke rekanan!');
+
+        return redirect()->back();
+    }
+
+    // CONTRACT FINAL
+    public function contracts_final()
+    {
+        $contracts = ContractVendor::whereIn('status_id', [11])->get();
+        return view('buyer.contracts-final', compact('contracts'));
+    }
+
+    public function contract_final(Contract $contract, Vendor $vendor)
+    {
+        $contracts = $contract->vendors()->where('vendor_id', $vendor->id)->withPivot('id')->first();
+        $review_hukum = ReviewLegal::where('contract_vendor_id', $contracts->pivot->id)->get();
+        return view('buyer.contract-final', compact('contracts', 'contract', 'review_hukum'));
     }
 }
