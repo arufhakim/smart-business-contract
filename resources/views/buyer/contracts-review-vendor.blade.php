@@ -72,6 +72,10 @@
                                 @elseif ($contract->status_id == 8)
                                 <span class="badge badge-success">DIREKTUR KEUANGAN DAN UMUM</span>
                                 @elseif ($contract->status_id == 9)
+                                <span class="badge badge-success">APPROVED</span>
+                                @elseif ($contract->status_id == 10)
+                                <span class="badge badge-success">VENDOR SIGNATURE</span>
+                                @elseif ($contract->status_id == 11)
                                 <span class="badge badge-danger">FINAL</span>
                                 @endif
                             </td>

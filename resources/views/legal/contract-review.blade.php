@@ -27,13 +27,10 @@
             </div>
         </div>
         <div class="card-body">
-            @if($contracts->pivot->status_id === 7)
+            @if($contracts->pivot->status_id == 3)
             <div class="mb-3">
                 <a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#kembalikan">Kembalikan</a>
-                @if ($contracts->pivot->nilai_kontrak <= 500000000) <a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#final-approval">Approve</a>
-                    @else
-                    <a href="#" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#dku">Kirim Ke DKU</a>
-                    @endif
+                <a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#lanjut">Proses Lanjut</a>
             </div>
             @endif
             <form>
@@ -101,7 +98,45 @@
     </div>
     <div class="card">
         <div class="card-header card-forestgreen">
-            <h6 class="card-title pt-1">Kontrak</h6>
+            <h6 class="card-title pt-1">Review Hukum</h6>
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool btn-xs pr-0" data-card-widget="maximize"><i class="fas fa-expand fa-xs icon-border-default"></i>
+                </button>
+                <button type="button" class="btn btn-tool btn-xs" data-card-widget="collapse"><i class="fas fa-minus fa-xs icon-border-yellow"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="pekerjaanTable" class="table table-sm table-hovered table-bordered table-hover table-striped datatable2">
+                    <thead>
+                        <tr>
+                            <th class="text-center pr-0" style="vertical-align: middle; width: 5%;">No.</th>
+                            <th class="text-center pr-0" style="vertical-align: middle; width: 20%;">Nama Reviewer</th>
+                            <th class="text-center pr-0" style="vertical-align: middle; width: 65%;">Hasil Review
+                            </th>
+                            <th class="text-center pr-0" style="vertical-align: middle; width: 10%;">Tanggal Dibuat
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($review_hukum as $hukum)
+                        <tr>
+                            <td class="text-center" style="vertical-align: middle;">{{ $loop->iteration }}</td>
+                            <td style="vertical-align: middle;">{{ $hukum->name }}</td>
+                            <td style="vertical-align: middle;">{{ $hukum->review_contract }}</td>
+                            <td class="text-center" style="vertical-align: middle;">
+                                {{ date('d/m/Y', strtotime($hukum->created_at)) }}
+                            </td>
+                            @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header card-forestgreen">
+            <h6 class="card-title pt-1">Draft Kontrak</h6>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool btn-xs pr-0" data-card-widget="maximize"><i class="fas fa-expand fa-xs icon-border-default"></i>
                 </button>
@@ -126,13 +161,13 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form class="d-inline" action="{{ route('svp.contract-return', ['contract' => $contracts->pivot->contract_id, 'vendor' => $contracts->pivot->vendor_id]) }}" method="POST">
+                <form class="d-inline" action="{{ route('legal.contract-return', ['contract' => $contracts->pivot->contract_id, 'vendor' => $contracts->pivot->vendor_id]) }}" method="POST">
                     @csrf
                     @method('post')
                     <div class="form-group">
-                        <label for="description">Deskripsi</label>
-                        <textarea class="form-control z-depth-1" name="description" id="description" rows="3"></textarea>
-                        @error('description')
+                        <label for="review_contract">Deskripsi</label>
+                        <textarea class="form-control z-depth-1" name="review_contract" id="review_contract" rows="3"></textarea>
+                        @error('review_contract')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
@@ -148,24 +183,24 @@
     </div>
 </div>
 
-<!-- Kirim ke DKU -->
-<div class="modal fade" id="dku" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Proses Lanjut -->
+<div class="modal fade" id="lanjut" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Kirim ke DKU</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Proses Lanjut</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form class="d-inline" action="{{ route('svp.contract-approval', ['contract' => $contracts->pivot->contract_id, 'vendor' => $contracts->pivot->vendor_id]) }}" method="POST">
+                <form class="d-inline" action="{{ route('legal.contract-approval', ['contract' => $contracts->pivot->contract_id, 'vendor' => $contracts->pivot->vendor_id]) }}" method="POST">
                     @csrf
                     @method('post')
                     <div class="form-group">
-                        <label for="description">Deskripsi</label>
-                        <textarea class="form-control z-depth-1" name="description" id="description" rows="3"></textarea>
-                        @error('description')
+                        <label for="review_contract">Deskripsi</label>
+                        <textarea class="form-control z-depth-1" name="review_contract" id="review_contract" rows="3"></textarea>
+                        @error('review_contract')
                         <div class="invalid-feedback">
                             {{ $message }}
                         </div>
@@ -174,40 +209,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary btn-xs" data-dismiss="modal">Close</button>
-                <button class="btn btn-warning btn-xs" type="submit">Kirim ke DKU</button>
-            </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Persetujuan -->
-<div class="modal fade" id="final-approval" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Persetujuan</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form class="d-inline" action="{{ route('final-approval', ['contract' => $contracts->pivot->contract_id, 'vendor' => $contracts->pivot->vendor_id]) }}" method="POST">
-                    @csrf
-                    @method('post')
-                    <div class="form-group">
-                        <label for="description">Deskripsi</label>
-                        <textarea class="form-control z-depth-1" name="description" id="description" rows="3"></textarea>
-                        @error('description')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-xs" data-dismiss="modal">Close</button>
-                <button class="btn btn-primary btn-xs" type="submit">Persetujuan</button>
+                <button class="btn btn-primary btn-xs" type="submit">Proses Lanjut</button>
             </div>
             </form>
         </div>

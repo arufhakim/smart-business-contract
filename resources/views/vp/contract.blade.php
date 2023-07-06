@@ -80,7 +80,10 @@
                         @elseif ($contracts->pivot->status_id == 5)value="ASSISTANT VICE PRESIDENT"
                         @elseif ($contracts->pivot->status_id == 6)value="VICE PRESIDENT"
                         @elseif ($contracts->pivot->status_id == 7)value="SENIOR VICE PRESIDENT"
-                        @elseif ($contracts->pivot->status_id == 8)value="DIREKTUR KEUNGAN DAN UMUM" @endif
+                        @elseif ($contracts->pivot->status_id == 8)value="DIREKTUR KEUNGAN DAN UMUM"
+                        @elseif ($contracts->pivot->status_id == 9)value="APPROVED"
+                        @elseif ($contracts->pivot->status_id == 10)value="VENDOR SIGNATURE"
+                        @elseif ($contracts->pivot->status_id == 11)value="FINAL" @endif
                         readonly>
                     </div>
                 </div>
@@ -89,7 +92,7 @@
     </div>
     <div class="card">
         <div class="card-header card-forestgreen">
-            <h6 class="card-title pt-1">Kontrak</h6>
+            <h6 class="card-title pt-1">Dokumen Kontrak</h6>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool btn-xs pr-0" data-card-widget="maximize"><i class="fas fa-expand fa-xs icon-border-default"></i>
                 </button>
@@ -98,7 +101,22 @@
             </div>
         </div>
         <div class="card-body">
-            <embed src="{{ asset($contracts->pivot->filename) }}.pdf" width="100%" height="600px" type="application/pdf">
+            <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation" style="width: 50%;">
+                    <a class="nav-link text-center active" id="draft-tab" data-toggle="tab" data-target="#draft" href="#draft" role="tab" aria-controls="draft" aria-selected="true">DRAFT KONTRAK</a>
+                </li>
+                <li class="nav-item" role="presentation" style="width: 50%;">
+                    <a class="nav-link text-center" id="vendor-tab" data-toggle="tab" data-target="#vendor" href="#vendor" role="tab" aria-controls="vendor" aria-selected="false">FINAL KONTRAK</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane show active" id="draft" role="tabpanel" aria-labelledby="draft-tab">
+                    <embed src="{{ asset($contracts->pivot->filename) }}.pdf" width="100%" height="600px" type="application/pdf">
+                </div>
+                <div class="tab-pane" id="vendor" role="tabpanel" aria-labelledby="vendor-tab">
+                    <embed src="{{ asset('file_upload/'.$contracts->pivot->final_vendor) }}" width="100%" height="600px" type="application/pdf">
+                </div>
+            </div>
         </div>
     </div>
     <div class="card">

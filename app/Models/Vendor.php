@@ -20,7 +20,7 @@ class Vendor extends Model
 
     public function contracts()
     {
-        return $this->belongsToMany(Contract::class)->withPivot('number','prosentase', 'nilai_kontrak', 'director', 'address', 'phone','filename', 'status_id');
+        return $this->belongsToMany(Contract::class)->withPivot('number','prosentase', 'nilai_kontrak', 'director', 'address', 'phone','filename', 'final_vendor', 'status_id');
     }
 
     public function contractVendor()

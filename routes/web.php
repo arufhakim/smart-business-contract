@@ -63,10 +63,16 @@ Route::get('/vendor/contract', [VendorController::class, 'contracts'])->name('ve
 Route::get('/vendor/contract/{contract}/vendor/{vendor}', [VendorController::class, 'contract'])->name('vendor.contract');
 Route::get('/vendor/contract/{contract}/vendor/{vendor}/edit', [VendorController::class, 'contract_edit'])->name('vendor.contract-edit');
 Route::put('/vendor/contract/{contract}/vendor/{vendor}/update', [VendorController::class, 'contract_update'])->name('vendor.contract-update');
+Route::get('/vendor/contract/final', [VendorController::class, 'contracts_final'])->name('vendor.contracts-final');
+Route::get('/vendor/contract/{contract}/vendor/{vendor}/final', [VendorController::class, 'contract_final'])->name('vendor.contract-final');
+Route::patch('/vendor/contract/{contract}/vendor/{vendor}/upload', [VendorController::class, 'contract_upload'])->name('vendor.contract-upload');
 
 //Legal Contract
 Route::get('/legal/contract', [LegalController::class, 'contracts'])->name('legal.contracts');
 Route::get('/legal/contract/{contract}/vendor/{vendor}', [LegalController::class, 'contract'])->name('legal.contract');
+Route::get('/legal/contract/review', [LegalController::class, 'review_contracts'])->name('legal.review-contracts');
+Route::get('/legal/contract/{contract}/vendor/{vendor}/review', [LegalController::class, 'review_contract'])->name('legal.review-contract');
+Route::post('/legal/contract/{contract}/vendor/{vendor}/return', [LegalController::class, 'contract_return'])->name('legal.contract-return');
 Route::post('/legal/contract/{contract}/vendor/{vendor}/approval', [LegalController::class, 'contract_approval'])->name('legal.contract-approval');
 
 // AVP

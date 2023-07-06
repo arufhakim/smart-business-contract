@@ -78,7 +78,9 @@
                     @elseif ($contracts->pivot->status_id == 6)value="VICE PRESIDENT"
                     @elseif ($contracts->pivot->status_id == 7)value="SENIOR VICE PRESIDENT"
                     @elseif ($contracts->pivot->status_id == 8)value="DIREKTUR KEUNGAN DAN UMUM"
-                    @elseif ($contracts->pivot->status_id == 9)value="FINAL" @endif
+                    @elseif ($contracts->pivot->status_id == 9)value="APPROVED"
+                    @elseif ($contracts->pivot->status_id == 10)value="VENDOR SIGNATURE"
+                    @elseif ($contracts->pivot->status_id == 11)value="FINAL" @endif
                     readonly>
                 </div>
             </div>
@@ -87,7 +89,7 @@
 </div>
 <div class="card">
     <div class="card-header card-forestgreen">
-        <h6 class="card-title pt-1">Kontrak</h6>
+        <h6 class="card-title pt-1">Dokumen Kontrak</h6>
         <div class="card-tools">
             <button type="button" class="btn btn-tool btn-xs pr-0" data-card-widget="maximize"><i class="fas fa-expand fa-xs icon-border-default"></i>
             </button>
@@ -96,7 +98,22 @@
         </div>
     </div>
     <div class="card-body">
-        <embed src="{{ asset($contracts->pivot->filename) }}.pdf" width="100%" height="600px" type="application/pdf">
+        <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation" style="width: 50%;">
+                <a class="nav-link text-center active" id="draft-tab" data-toggle="tab" data-target="#draft" href="#draft" role="tab" aria-controls="draft" aria-selected="true">DRAFT KONTRAK</a>
+            </li>
+            <li class="nav-item" role="presentation" style="width: 50%;">
+                <a class="nav-link text-center" id="vendor-tab" data-toggle="tab" data-target="#vendor" href="#vendor" role="tab" aria-controls="vendor" aria-selected="false">FINAL KONTRAK</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane show active" id="draft" role="tabpanel" aria-labelledby="draft-tab">
+                <embed src="{{ asset($contracts->pivot->filename) }}.pdf" width="100%" height="600px" type="application/pdf">
+            </div>
+            <div class="tab-pane" id="vendor" role="tabpanel" aria-labelledby="vendor-tab">
+                <embed src="{{ asset('file_upload/'.$contracts->pivot->final_vendor) }}" width="100%" height="600px" type="application/pdf">
+            </div>
+        </div>
     </div>
 </div>
 <div class="card">
@@ -110,91 +127,96 @@
         </div>
     </div>
     <div class="card-body">
-        <div class="table-responsive">
-            <table id="pekerjaanTable" class="table table-sm table-hovered table-bordered table-hover table-striped datatable2">
-                <thead>
-                    <tr>
-                        <th class="text-center pr-0" style="vertical-align: middle; width: 5%;">No.</th>
-                        <th class="text-center pr-0" style="vertical-align: middle; width: 20%;">Nama Reviewer</th>
-                        <th class="text-center pr-0" style="vertical-align: middle; width: 65%;">Hasil Review
-                        </th>
-                        <th class="text-center pr-0" style="vertical-align: middle; width: 10%;">Tanggal Dibuat
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($review_hukum as $hukum)
-                    <tr>
-                        <td class="text-center" style="vertical-align: middle;">{{ $loop->iteration }}</td>
-                        <td style="vertical-align: middle;">{{ $hukum->name }}</td>
-                        <td style="vertical-align: middle;">{{ $hukum->review_contract }}</td>
-                        <td class="text-center" style="vertical-align: middle;">
-                            {{ date('d/m/Y', strtotime($hukum->created_at)) }}
-                        </td>
-                        @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-<div class="card">
-    <div class="card-header card-forestgreen">
-        <h6 class="card-title pt-1">Log History</h6>
-        <div class="card-tools">
-            <button type="button" class="btn btn-tool btn-xs pr-0" data-card-widget="maximize"><i class="fas fa-expand fa-xs icon-border-default"></i>
-            </button>
-            <button type="button" class="btn btn-tool btn-xs" data-card-widget="collapse"><i class="fas fa-minus fa-xs icon-border-yellow"></i>
-            </button>
-        </div>
-    </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table id="pekerjaanTable" class="table table-sm table-hovered table-bordered table-hover table-striped datatable2">
-                <thead>
-                    <tr>
-                        <th class="text-center pr-0" style="vertical-align: middle; width: 5%;">No.</th>
-                        <th class="text-center pr-0" style="vertical-align: middle; width: 20%;">Nama</th>
-                        <th class="text-center pr-0" style="vertical-align: middle; width: 20%;">Posisi
-                        </th>
-                        <th class="text-center pr-0" style="vertical-align: middle; width: 45%;">Deskripsi
-                        </th>
-                        <th class="text-center pr-0" style="vertical-align: middle; width: 10%;">Tanggal Dibuat
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($approvals as $approval)
-                    <tr>
-                        <td class="text-center" style="vertical-align: middle;">{{ $loop->iteration }}</td>
-                        <td style="vertical-align: middle;">{{ $approval->name }}</td>
-                        <td class="text-center" style="vertical-align: middle;">
-                            @if ($approval->status == 1)
-                            <span class="badge badge-success">VENDOR</span>
-                            @elseif ($approval->status == 2)
-                            <span class="badge badge-success">BUYER</span>
-                            @elseif ($approval->status == 3)
-                            <span class="badge badge-success">HUKUM</span>
-                            @elseif ($approval->status == 4)
-                            <span class="badge badge-success">APPROVE HUKUM</span>
-                            @elseif ($approval->status == 5)
-                            <span class="badge badge-success">ASSISTANT VICE PRESIDENT</span>
-                            @elseif ($approval->status == 6)
-                            <span class="badge badge-success">VICE PRESIDENT</span>
-                            @elseif ($approval->status == 7)
-                            <span class="badge badge-success">SENIOR VICE PRESIDENT</span>
-                            @elseif ($approval->status == 8)
-                            <span class="badge badge-success">DIREKTUR KEUANGAN DAN UMUM</span>
-                            @elseif ($approval->status == 9)
-                            <span class="badge badge-danger">FINAL</span>
-                            @endif
-                        </td>
-                        <td style="vertical-align: middle;">{{ $approval->description }}</td>
-                        <td class="text-center" style="vertical-align: middle;">
-                            {{ date('d/m/Y', strtotime($approval->created_at)) }}
-                        </td>
-                        @endforeach
-                </tbody>
-            </table>
+        <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation" style="width: 50%;">
+                <a class="nav-link text-center active" id="review-tab" data-toggle="tab" data-target="#review" href="#review" role="tab" aria-controls="review" aria-selected="true">REVIEW HUKUM</a>
+            </li>
+            <li class="nav-item" role="presentation" style="width: 50%;">
+                <a class="nav-link text-center" id="log-tab" data-toggle="tab" data-target="#log" href="#log" role="tab" aria-controls="log" aria-selected="false">LOG HISTORY</a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane show active" id="review" role="tabpanel" aria-labelledby="review-tab">
+                <div class="table-responsive">
+                    <table id="pekerjaanTable" class="table table-sm table-hovered table-bordered table-hover table-striped datatable2">
+                        <thead>
+                            <tr>
+                                <th class="text-center pr-0" style="vertical-align: middle; width: 5%;">No.</th>
+                                <th class="text-center pr-0" style="vertical-align: middle; width: 20%;">Nama Reviewer</th>
+                                <th class="text-center pr-0" style="vertical-align: middle; width: 65%;">Hasil Review
+                                </th>
+                                <th class="text-center pr-0" style="vertical-align: middle; width: 10%;">Tanggal Dibuat
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($review_hukum as $hukum)
+                            <tr>
+                                <td class="text-center" style="vertical-align: middle;">{{ $loop->iteration }}</td>
+                                <td style="vertical-align: middle;">{{ $hukum->name }}</td>
+                                <td style="vertical-align: middle;">{{ $hukum->review_contract }}</td>
+                                <td class="text-center" style="vertical-align: middle;">
+                                    {{ date('d/m/Y', strtotime($hukum->created_at)) }}
+                                </td>
+                                @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="tab-pane" id="log" role="tabpanel" aria-labelledby="log-tab">
+                <div class="table-responsive">
+                    <table id="pekerjaanTable" class="table table-sm table-hovered table-bordered table-hover table-striped datatable2">
+                        <thead>
+                            <tr>
+                                <th class="text-center pr-0" style="vertical-align: middle; width: 5%;">No.</th>
+                                <th class="text-center pr-0" style="vertical-align: middle; width: 20%;">Nama</th>
+                                <th class="text-center pr-0" style="vertical-align: middle; width: 20%;">Posisi
+                                </th>
+                                <th class="text-center pr-0" style="vertical-align: middle; width: 45%;">Deskripsi
+                                </th>
+                                <th class="text-center pr-0" style="vertical-align: middle; width: 10%;">Tanggal Dibuat
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($approvals as $approval)
+                            <tr>
+                                <td class="text-center" style="vertical-align: middle;">{{ $loop->iteration }}</td>
+                                <td style="vertical-align: middle;">{{ $approval->name }}</td>
+                                <td class="text-center" style="vertical-align: middle;">
+                                    @if ($approval->status == 1)
+                                    <span class="badge badge-success">VENDOR</span>
+                                    @elseif ($approval->status == 2)
+                                    <span class="badge badge-success">BUYER</span>
+                                    @elseif ($approval->status == 3)
+                                    <span class="badge badge-success">HUKUM</span>
+                                    @elseif ($approval->status == 4)
+                                    <span class="badge badge-success">APPROVE HUKUM</span>
+                                    @elseif ($approval->status == 5)
+                                    <span class="badge badge-success">ASSISTANT VICE PRESIDENT</span>
+                                    @elseif ($approval->status == 6)
+                                    <span class="badge badge-success">VICE PRESIDENT</span>
+                                    @elseif ($approval->status == 7)
+                                    <span class="badge badge-success">SENIOR VICE PRESIDENT</span>
+                                    @elseif ($approval->status == 8)
+                                    <span class="badge badge-success">DIREKTUR KEUANGAN DAN UMUM</span>
+                                    @elseif ($approval->status == 9)
+                                    <span class="badge badge-success">APPROVED</span>
+                                    @elseif ($approval->status == 10)
+                                    <span class="badge badge-success">VENDOR SIGNATURE</span>
+                                    @elseif ($approval->status == 11)
+                                    <span class="badge badge-danger">FINAL</span>
+                                    @endif
+                                </td>
+                                <td style="vertical-align: middle;">{{ $approval->description }}</td>
+                                <td class="text-center" style="vertical-align: middle;">
+                                    {{ date('d/m/Y', strtotime($approval->created_at)) }}
+                                </td>
+                                @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>

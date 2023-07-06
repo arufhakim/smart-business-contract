@@ -1,10 +1,10 @@
 @extends('layouts.master-dashboard')
-@section('page-title', 'Final')
+@section('page-title', 'Final Kontrak')
 @section('buyer-final', 'active')
 @section('address')
 <ol class="breadcrumb float-sm-right">
     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
-    <li class="breadcrumb-item active">Final</li>
+    <li class="breadcrumb-item active">Final Kontrak</li>
 </ol>
 @endsection
 @push('styles')
@@ -18,7 +18,7 @@
 <div>
     <div class="card">
         <div class="card-header card-forestgreen">
-            <h6 class="card-title pt-1">Final</h6>
+            <h6 class="card-title pt-1">Final Kontrak</h6>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool btn-xs pr-0" data-card-widget="maximize"><i class="fas fa-expand fa-xs icon-border-default"></i>
                 </button>
@@ -72,7 +72,11 @@
                                 @elseif ($contract->status_id == 8)
                                 <span class="badge badge-success">DIREKTUR KEUANGAN DAN UMUM</span>
                                 @elseif ($contract->status_id == 9)
-                                <span class="badge badge-danger">APPROVE</span>
+                                <span class="badge badge-success">APPROVED</span>
+                                @elseif ($contract->status_id == 10)
+                                <span class="badge badge-success">VENDOR SIGNATURE</span>
+                                @elseif ($contract->status_id == 11)
+                                <span class="badge badge-danger">FINAL</span>
                                 @endif
                             </td>
                             <td class="text-center" style="vertical-align: middle;"> <a href="{{ route('buyer.contract-final', ['contract' => $contract->contract_id, 'vendor' => $contract->vendor_id]) }}" class="btn btn-primary btn-xs"><b>Rincian</b></a>

@@ -71,54 +71,25 @@
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="status" class="col-sm-2 col-form-label">Status</label>
+                    <label for="status" class="col-sm-2 col-form-label">Posisi</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="status" @if ($contracts->pivot->status_id == 1) value="REVIEW VENDOR"
-                        @elseif ($contracts->pivot->status_id == 2)value="REVIEW BUYER"
-                        @elseif ($contracts->pivot->status_id == 3)value="REVIEW HUKUM"
+                        <input type="text" class="form-control" id="status" @if ($contracts->pivot->status_id == 1) value="VENDOR"
+                        @elseif ($contracts->pivot->status_id == 2)value="BUYER"
+                        @elseif ($contracts->pivot->status_id == 3)value="HUKUM"
                         @elseif ($contracts->pivot->status_id == 4)value="APPROVE HUKUM"
                         @elseif ($contracts->pivot->status_id == 5)value="ASSISTANT VICE PRESIDENT"
                         @elseif ($contracts->pivot->status_id == 6)value="VICE PRESIDENT"
                         @elseif ($contracts->pivot->status_id == 7)value="SENIOR VICE PRESIDENT"
-                        @elseif ($contracts->pivot->status_id == 8)value="DIREKTUR KEUNGAN DAN UMUM" @endif
+                        @elseif ($contracts->pivot->status_id == 8)value="DIREKTUR KEUNGAN DAN UMUM"
+                        @elseif ($contracts->pivot->status_id == 9)value="APPROVED"
+                        @elseif ($contracts->pivot->status_id == 10)value="VENDOR SIGNATURE"
+                        @elseif ($contracts->pivot->status_id == 11)value="FINAL" @endif
                         readonly>
                     </div>
                 </div>
             </form>
         </div>
     </div>
-    @if($contracts->pivot->status_id < 4)
-    <div class="card">
-        <div class="card-header card-forestgreen">
-            <h6 class="card-title pt-1">Review Kontrak</h6>
-            <div class="card-tools">
-                <button type="button" class="btn btn-tool btn-xs pr-0" data-card-widget="maximize"><i class="fas fa-expand fa-xs icon-border-default"></i>
-                </button>
-                <button type="button" class="btn btn-tool btn-xs" data-card-widget="collapse"><i class="fas fa-minus fa-xs icon-border-yellow"></i>
-                </button>
-            </div>
-        </div>
-        <div class="card-body">
-            <form action="{{ route('legal.contract-approval', ['contract' => $contracts->pivot->contract_id, 'vendor' => $contracts->pivot->vendor_id]) }}" method="POST">
-                @csrf
-                @method('post')
-                <div class="form-group">
-                    <label for="review_contract">Deskripsi</label>
-                    <textarea class="form-control z-depth-1" name="review_contract" id="review_contract" rows="3"></textarea>
-                    @error('review_contract')
-                    <div class="invalid-feedback">
-                        {{ $message }}
-                    </div>
-                    @enderror
-                </div>
-                <div class="row justify-content-end mr-0">
-                    <button type="submit" name="return" class="btn btn-danger btn-xs text-right mr-2" data-toggle="confirmation" data-placement="left">Kembalikan</button>
-                    <button type="submit" name="process" class="btn btn-success btn-xs text-right" data-toggle="confirmation" data-placement="left">Proses Lanjut</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    @endif
     <div class="card">
         <div class="card-header card-forestgreen">
             <h6 class="card-title pt-1">Review Hukum</h6>
@@ -159,7 +130,7 @@
     </div>
     <div class="card">
         <div class="card-header card-forestgreen">
-            <h6 class="card-title pt-1">Kontrak</h6>
+            <h6 class="card-title pt-1">Draft Kontrak</h6>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool btn-xs pr-0" data-card-widget="maximize"><i class="fas fa-expand fa-xs icon-border-default"></i>
                 </button>

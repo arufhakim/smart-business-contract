@@ -129,7 +129,7 @@
                             <a href="{{route('buyer.contracts-final')}}" class="nav-link @yield('buyer-final')">
                                 <i class="nav-icon fas fa-chart-line fa-xs"></i>
                                 <p>
-                                    Final Rekanan
+                                    Final Kontrak
                                 </p>
                             </a>
                         </li>
@@ -144,6 +144,14 @@
                                 </p>
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a href="{{route('vendor.contracts-final')}}" class="nav-link @yield('final-contract')">
+                                <i class="nav-icon fas fa-chart-line fa-xs"></i>
+                                <p>
+                                    Upload Kontrak
+                                </p>
+                            </a>
+                        </li>
                         @endif
 
                         @if(Auth::user()->userDetail->role->role == "Legal")
@@ -151,7 +159,15 @@
                             <a href="{{route('legal.contracts')}}" class="nav-link @yield('active-contract')">
                                 <i class="nav-icon fas fa-chart-line fa-xs"></i>
                                 <p>
-                                    Kontrak
+                                    Monitoring Kontrak
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{route('legal.review-contracts')}}" class="nav-link @yield('review-contract')">
+                                <i class="nav-icon fas fa-chart-line fa-xs"></i>
+                                <p>
+                                    Review Kontrak
                                 </p>
                             </a>
                         </li>

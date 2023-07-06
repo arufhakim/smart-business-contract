@@ -27,14 +27,16 @@
             </div>
         </div>
         <div class="card-body">
+            @if($contracts->pivot->status_id === 6)
             <div class="mb-3">
                 <a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#kembalikan">Kembalikan</a>
-                @if ($contracts->pivot->nilai_kontrak <= 100000000) <a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#final-approval">Persetujuan</a>
+                @if ($contracts->pivot->nilai_kontrak <= 100000000) <a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#final-approval">Approve</a>
                     @else
                     <a href="#" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#svp">Kirim Ke
                         SVP</a>
                     @endif
             </div>
+            @endif
             <form>
                 <div class="form-group row">
                     <label for="number" class="col-sm-2 col-form-label">Nomor Kontrak</label>
@@ -88,7 +90,10 @@
                         @elseif ($contracts->pivot->status_id == 5)value="ASSISTANT VICE PRESIDENT"
                         @elseif ($contracts->pivot->status_id == 6)value="VICE PRESIDENT"
                         @elseif ($contracts->pivot->status_id == 7)value="SENIOR VICE PRESIDENT"
-                        @elseif ($contracts->pivot->status_id == 8)value="DIREKTUR KEUNGAN DAN UMUM" @endif
+                        @elseif ($contracts->pivot->status_id == 8)value="DIREKTUR KEUNGAN DAN UMUM"
+                        @elseif ($contracts->pivot->status_id == 9)value="APPROVED"
+                        @elseif ($contracts->pivot->status_id == 10)value="VENDOR SIGNATURE"
+                        @elseif ($contracts->pivot->status_id == 11)value="FINAL" @endif
                         readonly>
                     </div>
                 </div>

@@ -27,10 +27,12 @@
             </div>
         </div>
         <div class="card-body">
+            @if($contracts->pivot->status_id === 8)
             <div class="mb-3">
                 <a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#kembalikan">Kembalikan</a>
-                <a href="#" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#vp">Kirim Ke VP</a>
+                <a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#final-approval">Approve</a>
             </div>
+            @endif
             <form>
                 <div class="form-group row">
                     <label for="number" class="col-sm-2 col-form-label">Nomor Kontrak</label>
@@ -84,7 +86,10 @@
                         @elseif ($contracts->pivot->status_id == 5)value="ASSISTANT VICE PRESIDENT"
                         @elseif ($contracts->pivot->status_id == 6)value="VICE PRESIDENT"
                         @elseif ($contracts->pivot->status_id == 7)value="SENIOR VICE PRESIDENT"
-                        @elseif ($contracts->pivot->status_id == 8)value="DIREKTUR KEUNGAN DAN UMUM" @endif
+                        @elseif ($contracts->pivot->status_id == 8)value="DIREKTUR KEUNGAN DAN UMUM"
+                        @elseif ($contracts->pivot->status_id == 9)value="APPROVED"
+                        @elseif ($contracts->pivot->status_id == 10)value="VENDOR SIGNATURE"
+                        @elseif ($contracts->pivot->status_id == 11)value="FINAL" @endif
                         readonly>
                     </div>
                 </div>
@@ -140,18 +145,18 @@
     </div>
 </div>
 
-<!-- Kirim ke VP -->
-<div class="modal fade" id="vp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!-- Persetujuan -->
+<div class="modal fade" id="final-approval" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Kirim ke VP</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Persetujuan</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
-                <form class="d-inline" action="{{ route('avp.contract-approval', ['contract' => $contracts->pivot->contract_id, 'vendor' => $contracts->pivot->vendor_id]) }}" method="POST">
+                <form class="d-inline" action="{{ route('final-approval', ['contract' => $contracts->pivot->contract_id, 'vendor' => $contracts->pivot->vendor_id]) }}" method="POST">
                     @csrf
                     @method('post')
                     <div class="form-group">
@@ -166,7 +171,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary btn-xs" data-dismiss="modal">Close</button>
-                <button class="btn btn-warning btn-xs" type="submit">Kirim ke VP</button>
+                <button class="btn btn-primary btn-xs" type="submit">Persetujuan</button>
             </div>
             </form>
         </div>

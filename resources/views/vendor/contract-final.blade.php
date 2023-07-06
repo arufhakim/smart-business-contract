@@ -1,6 +1,6 @@
 @extends('layouts.master-dashboard')
 @section('page-title', 'Detail Kontrak')
-@section('review-contract', 'active')
+@section('final-contract', 'active')
 @section('address')
 <ol class="breadcrumb float-sm-right">
     <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Dashboard</a></li>
@@ -27,15 +27,11 @@
             </div>
         </div>
         <div class="card-body">
-            @if($contracts->pivot->status_id === 7)
             <div class="mb-3">
-                <a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#kembalikan">Kembalikan</a>
-                @if ($contracts->pivot->nilai_kontrak <= 500000000) <a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#final-approval">Approve</a>
-                    @else
-                    <a href="#" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#dku">Kirim Ke DKU</a>
-                    @endif
+                @if($contracts->pivot->status_id == 9)
+                <a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#rekanan">Kirim ke Rekanan</a>
+                @endif
             </div>
-            @endif
             <form>
                 <div class="form-group row">
                     <label for="number" class="col-sm-2 col-form-label">Nomor Kontrak</label>
@@ -101,7 +97,42 @@
     </div>
     <div class="card">
         <div class="card-header card-forestgreen">
-            <h6 class="card-title pt-1">Kontrak</h6>
+            <h6 class="card-title">Upload Kontrak</h6>
+            <!-- tool -->
+            <div class="card-tools">
+                <button type="button" class="btn btn-tool btn-xs pr-0" data-card-widget="maximize"><i class="fas fa-expand fa-xs icon-border-default"></i>
+                </button>
+                <button type="button" class="btn btn-tool btn-xs" data-card-widget="collapse"><i class="fas fa-minus fa-xs icon-border-yellow"></i>
+                </button>
+            </div>
+            <!-- /tool -->
+        </div>
+        <div class="card-body">
+            <form action="{{route('vendor.contract-upload', ['contract' => $contracts->pivot->contract_id, 'vendor' => $contracts->pivot->vendor_id])}}" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('patch')
+                <div class="form-group">
+                    <label class="col-form-label col-form-label-xs" for="kontrak">Dokumen Kontrak</label>
+                    <div class="custom-file">
+                        <input type="file" name="kontrak" class="custom-file-input @error('kontrak') is-invalid @enderror" value="{{old('kontrak')}}" id="kontrak">
+                        <label class="custom-file-label" for="kontrak" style="font-size: 12px !important;">Choose file</label>
+                        <span style="font-size: 10px;">Tipe File: PDF, Maksimal: 10MB</span>
+                        @error('kontrak')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                    </div>
+                </div>
+                <div class="row justify-content-end mr-0">
+                    <button type="submit" class="btn btn-success btn-xs text-right" data-toggle="confirmation" data-placement="left">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-header card-forestgreen">
+            <h6 class="card-title pt-1">Dokumen Kontrak</h6>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool btn-xs pr-0" data-card-widget="maximize"><i class="fas fa-expand fa-xs icon-border-default"></i>
                 </button>
@@ -110,106 +141,22 @@
             </div>
         </div>
         <div class="card-body">
-            <embed src="{{ asset($contracts->pivot->filename) }}.pdf" width="100%" height="600px" type="application/pdf">
-        </div>
-    </div>
-</div>
-
-<!-- Kembalikan -->
-<div class="modal fade" id="kembalikan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Kembalikan</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+            <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation" style="width: 50%;">
+                    <a class="nav-link text-center active" id="draft-tab" data-toggle="tab" data-target="#draft" href="#draft" role="tab" aria-controls="draft" aria-selected="true">DRAFT KONTRAK</a>
+                </li>
+                <li class="nav-item" role="presentation" style="width: 50%;">
+                    <a class="nav-link text-center" id="vendor-tab" data-toggle="tab" data-target="#vendor" href="#vendor" role="tab" aria-controls="vendor" aria-selected="false">FINAL KONTRAK</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane show active" id="draft" role="tabpanel" aria-labelledby="draft-tab">
+                    <embed src="{{ asset($contracts->pivot->filename) }}.pdf" width="100%" height="600px" type="application/pdf">
+                </div>
+                <div class="tab-pane" id="vendor" role="tabpanel" aria-labelledby="vendor-tab">
+                    <embed src="{{ asset('file_upload/'.$contracts->pivot->final_vendor) }}" width="100%" height="600px" type="application/pdf">
+                </div>
             </div>
-            <div class="modal-body">
-                <form class="d-inline" action="{{ route('svp.contract-return', ['contract' => $contracts->pivot->contract_id, 'vendor' => $contracts->pivot->vendor_id]) }}" method="POST">
-                    @csrf
-                    @method('post')
-                    <div class="form-group">
-                        <label for="description">Deskripsi</label>
-                        <textarea class="form-control z-depth-1" name="description" id="description" rows="3"></textarea>
-                        @error('description')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-xs" data-dismiss="modal">Close</button>
-                <button class="btn btn-danger btn-xs" type="submit">Kembalikan</button>
-            </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Kirim ke DKU -->
-<div class="modal fade" id="dku" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Kirim ke DKU</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form class="d-inline" action="{{ route('svp.contract-approval', ['contract' => $contracts->pivot->contract_id, 'vendor' => $contracts->pivot->vendor_id]) }}" method="POST">
-                    @csrf
-                    @method('post')
-                    <div class="form-group">
-                        <label for="description">Deskripsi</label>
-                        <textarea class="form-control z-depth-1" name="description" id="description" rows="3"></textarea>
-                        @error('description')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-xs" data-dismiss="modal">Close</button>
-                <button class="btn btn-warning btn-xs" type="submit">Kirim ke DKU</button>
-            </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Persetujuan -->
-<div class="modal fade" id="final-approval" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Persetujuan</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form class="d-inline" action="{{ route('final-approval', ['contract' => $contracts->pivot->contract_id, 'vendor' => $contracts->pivot->vendor_id]) }}" method="POST">
-                    @csrf
-                    @method('post')
-                    <div class="form-group">
-                        <label for="description">Deskripsi</label>
-                        <textarea class="form-control z-depth-1" name="description" id="description" rows="3"></textarea>
-                        @error('description')
-                        <div class="invalid-feedback">
-                            {{ $message }}
-                        </div>
-                        @enderror
-                    </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary btn-xs" data-dismiss="modal">Close</button>
-                <button class="btn btn-primary btn-xs" type="submit">Persetujuan</button>
-            </div>
-            </form>
         </div>
     </div>
 </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Vendor;
 use App\Models\Approval;
 use App\Models\Contract;
+use App\Models\ContractVendor;
 use App\Models\ReviewLegal;
 use Flasher\Prime\FlasherInterface;
 use Illuminate\Http\Request;
@@ -94,5 +95,40 @@ class VendorController extends Controller
         $flasher->addSuccess('Berhasil menambah data kontrak!');
 
         return redirect()->route('vendor.contract', ['contract' => $contract->id, 'vendor' => $vendor->id]);
+    }
+
+    // CONTRACT FINAL
+    public function contracts_final()
+    {
+        $contracts = ContractVendor::whereIn('status_id', [10, 11])->get();
+        return view('vendor.contracts-final', compact('contracts'));
+    }
+
+    public function contract_final(Contract $contract, Vendor $vendor)
+    {
+        $contracts = $contract->vendors()->where('vendor_id', $vendor->id)->withPivot('id')->first();
+        return view('vendor.contract-final', compact('contracts', 'contract'));
+    }
+
+    public function contract_upload(Request $request, Contract $contract, Vendor $vendor, FlasherInterface $flasher)
+    {
+        $request->validate([
+            'kontrak' => 'nullable|mimes:pdf|max:10000',
+        ]);
+
+        if ($request->hasFile('kontrak')) {
+            $kontrak = $request->file('kontrak');
+            $nama_kontrak = Str::random(30) . '.' . $kontrak->getClientOriginalExtension();
+            $kontrak->move('file_upload', $nama_kontrak);
+        }
+
+        $contract->vendors()->updateExistingPivot($vendor->id, [
+            'final_vendor' => $nama_kontrak,
+            'status_id' => 11
+        ]);
+
+        $flasher->addSuccess('Kontrak berhasil diupload!');
+
+        return redirect()->back();
     }
 }

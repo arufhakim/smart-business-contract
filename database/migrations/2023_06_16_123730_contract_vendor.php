@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->string('phone')->nullable();
             $table->string('filename')->nullable();
+            $table->string('final_vendor')->nullable();
             $table->foreign('vendor_id')->references('id')->on('vendors');
             $table->foreign('status_id')->references('id')->on('statuses');
             $table->foreign('contract_id')->references('id')->on('contracts');

@@ -27,11 +27,12 @@
             </div>
         </div>
         <div class="card-body">
+            @if($contracts->pivot->status_id === 5)
             <div class="mb-3">
                 <a href="#" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#kembalikan">Kembalikan</a>
                 <a href="#" class="btn btn-warning btn-xs" data-toggle="modal" data-target="#vp">Kirim Ke VP</a>
-                <a href="#" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#final">ACC</a>
             </div>
+            @endif
             <form>
                 <div class="form-group row">
                     <label for="number" class="col-sm-2 col-form-label">Nomor Kontrak</label>
@@ -85,7 +86,10 @@
                         @elseif ($contracts->pivot->status_id == 5)value="ASSISTANT VICE PRESIDENT"
                         @elseif ($contracts->pivot->status_id == 6)value="VICE PRESIDENT"
                         @elseif ($contracts->pivot->status_id == 7)value="SENIOR VICE PRESIDENT"
-                        @elseif ($contracts->pivot->status_id == 8)value="DIREKTUR KEUNGAN DAN UMUM" @endif
+                        @elseif ($contracts->pivot->status_id == 8)value="DIREKTUR KEUNGAN DAN UMUM"
+                        @elseif ($contracts->pivot->status_id == 9)value="APPROVED"
+                        @elseif ($contracts->pivot->status_id == 10)value="VENDOR SIGNATURE"
+                        @elseif ($contracts->pivot->status_id == 11)value="FINAL" @endif
                         readonly>
                     </div>
                 </div>
@@ -94,7 +98,7 @@
     </div>
     <div class="card">
         <div class="card-header card-forestgreen">
-            <h6 class="card-title pt-1">Kontrak</h6>
+            <h6 class="card-title pt-1">Draft Kontrak</h6>
             <div class="card-tools">
                 <button type="button" class="btn btn-tool btn-xs pr-0" data-card-widget="maximize"><i class="fas fa-expand fa-xs icon-border-default"></i>
                 </button>

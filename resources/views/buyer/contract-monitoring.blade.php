@@ -105,7 +105,11 @@
                                         @elseif ($contract->pivot->status_id == 8)
                                             <span class="badge badge-success">DIREKTUR KEUANGAN DAN UMUM</span>
                                         @elseif ($contract->pivot->status_id == 9)
-                                            <span class="badge badge-danger">Final</span>
+                                            <span class="badge badge-success">APPROVED</span>
+                                        @elseif ($contract->pivot->status_id == 10)
+                                            <span class="badge badge-success">VENDOR SIGNATURE</span>
+                                        @elseif ($contract->pivot->status_id == 11)
+                                            <span class="badge badge-danger">FINAL</span>
                                         @endif
                                     </td>
                                     <td class="text-center" style="vertical-align: middle;"> <a
